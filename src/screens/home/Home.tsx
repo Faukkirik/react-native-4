@@ -1,18 +1,26 @@
 import React, {useEffect, useState} from 'react';
 import {FlatList, ListRenderItem, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {api, PokemonItem} from "../../api/api";
+import {useAppNavigation} from "../types";
+import {useAppDispatch, useAppSelector} from "../../store/store";
+import {getAllPokemonTC} from "../../store/root/root";
 
 export const Home = () => {
-    const [allPokemons, setAllPokemons] = useState<PokemonItem[]>([])
+    const navigation = useAppNavigation()
+    const dispatch = useAppDispatch()
+    const allPokemon = useAppSelector(state => state.root.allPokemon)
+    //const [allPokemons, setAllPokemons] = useState<PokemonItem[]>([])
     useEffect(() => {
         api.getAllPokemon().then((res) => {
-            setAllPokemons(res.data.results)
+            dispatch(getAllPokemonTC())
         })
     }, [])
     const renderItem: ListRenderItem<PokemonItem> = ({item}) => {
         return (
             <View style={styles.item}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => {
+                    navigation.navigate('Details', {url: item.url})
+                }}>
                     <Text style={styles.name}>{item.name}</Text>
                 </TouchableOpacity>
             </View>
@@ -21,7 +29,7 @@ export const Home = () => {
     return (
         <View style={styles.container}>
             <FlatList
-                data={allPokemons}
+                data={allPokemon}
                 renderItem={renderItem}
                 keyExtractor={(item) => item.name}
             />

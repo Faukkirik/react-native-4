@@ -26,4 +26,7 @@ export const api = {
     getAllPokemon() {
         return instance.get<{results: PokemonItem[]}>('/pokemon')
     },
+    getCurrentPokemon(url: string) {
+        return instance.get<Pokemon>(url.replace(BASE_URL,''))
+    }
 }
