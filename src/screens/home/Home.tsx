@@ -21,7 +21,7 @@ export const Home = () => {
                 <TouchableOpacity onPress={() => {
                     navigation.navigate('Details', {url: item.url})
                 }}>
-                    <Text style={styles.name}>{item.name}</Text>
+                    <Text style={styles.name}>-{item.name}-</Text>
                 </TouchableOpacity>
             </View>
         )
